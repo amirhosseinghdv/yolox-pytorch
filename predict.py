@@ -16,20 +16,21 @@ from utils.util import mkdir, label_color, get_img_path
 def vis_result(img, results):
     for res_i, res in enumerate(results):
         label, conf, bbox = res[:3]
-        bbox = [int(i) for i in bbox]
-        if len(res) > 3:
-            reid_feat = res[4]
-            print("reid feat dim {}".format(len(reid_feat)))
+        if str(label) == 'human':
+            bbox = [int(i) for i in bbox]
+            if len(res) > 3:
+                reid_feat = res[4]
+                print("reid feat dim {}".format(len(reid_feat)))
 
-        color = label_color[opt.label_name.index(label)]
-        # show box
-        cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
-        # show label and conf
-        txt = '{}:{:.2f}'.format(label, conf)
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        txt_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
-        cv2.rectangle(img, (bbox[0], bbox[1] - txt_size[1] - 2), (bbox[0] + txt_size[0], bbox[1] - 2), color, -1)
-        cv2.putText(img, txt, (bbox[0], bbox[1] - 2), font, 0.5, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
+            color = label_color[opt.label_name.index(label)]
+            # show box
+            cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
+            # show label and conf
+            txt = '{}:{:.2f}'.format(label, conf)
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            txt_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+            cv2.rectangle(img, (bbox[0], bbox[1] - txt_size[1] - 2), (bbox[0] + txt_size[0], bbox[1] - 2), color, -1)
+            cv2.putText(img, txt, (bbox[0], bbox[1] - 2), font, 0.5, (255, 255, 255), thickness=1, lineType=cv2.LINE_AA)
     return img
 
 
